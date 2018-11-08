@@ -1,19 +1,40 @@
+import React from 'react';
 import { createStackNavigator } from 'react-navigation';
+import firebase from 'firebase';
 
 import HomeScreen from './screens/Home';
+import ThreadScreen from './screens/Thread';
 
-export default createStackNavigator({
+const Navigator = createStackNavigator({
   Home: HomeScreen,
+  Thread: ThreadScreen,
 }, {
   initialRouteName: 'Home',
-})
+});
 
-// export default class App extends React.Component {
-//   render() {
-//     return (
-//       <View style={styles.container}>
-//         <Text>chat-demo: Open up App.js to start working on your app!!</Text>
-//       </View>
-//     );
-//   }
-// }
+class App extends React.Component {
+  constructor(props) {
+    super(props);
+  }
+  componentDidMount() {
+    const config = {
+      apiKey: process.env.API_KEY,
+      authDomain: process.env.AUTH_DOMAIN,
+      databaseURL: process.env.DATABASE_URL,
+      projectId: process.env.PROJECT_ID,
+      storageBucket: process.env.STORAGE_BUCKET,
+      messagingSenderId: process.env.MESSAGING_SENDER_ID,
+    }
+    firebase.initializeApp(config);
+  }
+  render () {
+    return <Navigator />;
+  }
+}
+
+export default App;
+// export default createStackNavigator({
+//   Home: HomeScreen,
+// }, {
+//   initialRouteName: 'Home',
+// })
