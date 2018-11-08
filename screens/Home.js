@@ -1,8 +1,8 @@
 import React from 'react';
 import { StyleSheet, View, Text, Button } from 'react-native';
 import { Permissions, Notifications } from 'expo';
-import firebase from 'firebase';
-import 'firebase/firestore';
+
+import { db } from '../services/db';
 
 function registerForPushNotificationsAsync(navigation) {
     return async () => {
@@ -28,9 +28,6 @@ function registerForPushNotificationsAsync(navigation) {
         // Get the token that uniquely identifies this device
         let token = await Notifications.getExpoPushTokenAsync();
   
-        const settings = { timestampsInSnapshots: true };
-        const db = firebase.firestore();
-        db.settings(settings);
         db.collection('tokens').add({
             token,
         })
