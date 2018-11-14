@@ -41,7 +41,7 @@ function registerForPushNotificationsAsync(navigation) {
 
 const Home = ({ navigation }) => (
     <View style={styles.home}>
-        <Text>Hello chat-demo</Text>
+        <Text style={styles.title}>chat-demo</Text>
         <Text>This app use push notification for notify new messages.</Text>
         <Text>Please enable push notification when you starting chat-demo</Text>
         <Button title="Start with push notification" onPress={registerForPushNotificationsAsync(navigation)} />
@@ -54,6 +54,10 @@ const styles = StyleSheet.create({
         backgroundColor: '#fff',
         alignItems: 'center',
         justifyContent: 'center',
+    },
+    title: {
+        fontSize: 24,
+        marginBottom: 24,
     }
 });
 

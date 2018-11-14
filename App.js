@@ -1,13 +1,17 @@
 import React from 'react';
 import { createStackNavigator } from 'react-navigation';
-import firebase from 'firebase';
 
 import HomeScreen from './screens/Home';
 import ThreadScreen from './screens/Thread';
 
 const Navigator = createStackNavigator({
   Home: HomeScreen,
-  Thread: ThreadScreen,
+  Thread: {
+    screen: ThreadScreen,
+    navigationOptions: {
+      title: 'Thread',
+    }
+  },
 }, {
   initialRouteName: 'Home',
 });
