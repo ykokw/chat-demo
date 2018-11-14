@@ -4,23 +4,27 @@ import { createStackNavigator } from 'react-navigation';
 import HomeScreen from './screens/Home';
 import ThreadScreen from './screens/Thread';
 
-const Navigator = createStackNavigator({
-  Home: HomeScreen,
-  Thread: {
-    screen: ThreadScreen,
-    navigationOptions: {
-      title: 'Thread',
-    }
+const Navigator = createStackNavigator(
+  {
+    Home: HomeScreen,
+    Thread: {
+      screen: ThreadScreen,
+      navigationOptions: {
+        title: 'Thread',
+      },
+    },
   },
-}, {
-  initialRouteName: 'Home',
-});
+  {
+    initialRouteName: 'Home',
+  },
+);
 
 class App extends React.Component {
   constructor(props) {
     super(props);
   }
-  render () {
+
+  render() {
     return <Navigator />;
   }
 }
