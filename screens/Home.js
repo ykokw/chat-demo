@@ -6,31 +6,30 @@ import { db } from "../services/db";
 
 function registerForPushNotificationsAsync(navigation) {
   return async () => {
+    // プッシュ通知のパーミッションを取得
     const { status: existingStatus } = await Permissions.getAsync(
       Permissions.NOTIFICATIONS
     );
     let finalStatus = existingStatus;
 
-    // iOS won't necessarily prompt the user a second time.
+    // すでにプッシュ通知が許可されていればなにもしない
     if (existingStatus !== "granted") {
-      // Android remote notification permissions are granted during the app
-      // install, so this will only ask on iOS
+      // (iOS向け) プッシュ通知の許可をユーザーに求める
       const { status } = await Permissions.askAsync(Permissions.NOTIFICATIONS);
       finalStatus = status;
     }
 
-    // Stop here if the user did not grant permissions
+    // プッシュ通知が許可されなかった場合なにもしない
     if (finalStatus !== "granted") {
       return;
     }
 
-    // Get the token that uniquely identifies this device
+    // Expo用のデバイストークンを取得
     const token = await Notifications.getExpoPushTokenAsync();
 
+    // Firestoreにデバイストークンを保存
     db.collection("tokens")
-      .add({
-        token
-      })
+      .add({ token })
       .then(docRef => console.log(`document written with ID:${docRef}`))
       .catch(err => console.error(`error: ${err}`));
 

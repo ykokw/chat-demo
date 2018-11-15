@@ -26,6 +26,8 @@ class Thread extends React.Component {
     };
     this.handleChangeText = this.handleChangeText.bind(this);
     this.handleSubmitText = this.handleSubmitText.bind(this);
+
+    // メッセージが追加されたときのイベントリスナーを用意
     db.collection("messages")
       .orderBy("created_at")
       .onSnapshot(collections => {
