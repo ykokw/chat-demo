@@ -1,4 +1,4 @@
-import React from 'react';
+import React from "react";
 import {
   KeyboardAvoidingView,
   View,
@@ -6,10 +6,10 @@ import {
   Button,
   TextInput,
   FlatList,
-  StyleSheet,
-} from 'react-native';
+  StyleSheet
+} from "react-native";
 
-import { db } from '../services/db';
+import { db } from "../services/db";
 
 const ThreadItem = ({ item }) => (
   <View style={styles.listItemContainer}>
@@ -21,34 +21,34 @@ class Thread extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      text: '',
-      messages: [],
+      text: "",
+      messages: []
     };
     this.handleChangeText = this.handleChangeText.bind(this);
     this.handleSubmitText = this.handleSubmitText.bind(this);
-    db.collection('messages')
-      .orderBy('created_at')
-      .onSnapshot((collections) => {
+    db.collection("messages")
+      .orderBy("created_at")
+      .onSnapshot(collections => {
         const messages = [];
         collections.forEach(doc => messages.push(doc.data()));
         this.setState({
           text: this.state.text,
-          messages,
+          messages
         });
       });
   }
 
   handleChangeText(text) {
     this.setState({
-      text,
+      text
     });
   }
 
   handleSubmitText() {
     // messages コレクションにデータを保存
-    db.collection('messages').add({
+    db.collection("messages").add({
       text: this.state.text,
-      created_at: new Date(),
+      created_at: new Date()
     });
   }
 
@@ -59,14 +59,22 @@ class Thread extends React.Component {
         contentContainerStyle={styles.thread}
         style={styles.thread}
       >
-        <FlatList style={styles.list} data={this.state.messages} renderItem={ThreadItem} />
+        <FlatList
+          style={styles.list}
+          data={this.state.messages}
+          renderItem={ThreadItem}
+        />
         <View style={styles.textInputContainer}>
           <TextInput
             style={styles.textInput}
             placeholder="comment..."
             onChangeText={this.handleChangeText}
           />
-          <Button title="submit" onPress={this.handleSubmitText} style={styles.submitButton} />
+          <Button
+            title="submit"
+            onPress={this.handleSubmitText}
+            style={styles.submitButton}
+          />
         </View>
       </KeyboardAvoidingView>
     );
@@ -75,33 +83,33 @@ class Thread extends React.Component {
 
 const styles = StyleSheet.create({
   thread: {
-    flex: 1,
+    flex: 1
   },
   list: {
     flex: 1,
-    backgroundColor: '#CCC',
+    backgroundColor: "#CCC"
   },
   listItem: {
-    fontSize: 18,
+    fontSize: 18
   },
   listItemContainer: {
-    borderStyle: 'solid',
+    borderStyle: "solid",
     borderBottomWidth: 1,
-    borderBottomColor: '#333',
-    height: 50,
+    borderBottomColor: "#333",
+    height: 50
   },
   textInputContainer: {
     height: 50,
-    flexDirection: 'row',
-    backgroundColor: '#FFF',
+    flexDirection: "row",
+    backgroundColor: "#FFF"
   },
   textInput: {
-    flex: 1,
+    flex: 1
   },
   submitButton: {
     width: 60,
-    backgroundColor: '#555',
-  },
+    backgroundColor: "#555"
+  }
 });
 
 export default Thread;
