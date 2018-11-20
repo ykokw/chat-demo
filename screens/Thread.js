@@ -30,12 +30,10 @@ class Thread extends React.Component {
     // メッセージが追加されたときのイベントリスナーを用意
     db.collection("messages")
       .orderBy("created_at")
-      .onSnapshot(collections => {
-        const messages = [];
-        collections.forEach(doc => messages.push(doc.data()));
+      .onSnapshot(snapshot => {
         this.setState({
           text: this.state.text,
-          messages
+          messages: snapshot.docs.map(doc => doc.data())
         });
       });
   }
