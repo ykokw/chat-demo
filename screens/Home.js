@@ -4,6 +4,14 @@ import { Permissions, Notifications } from "expo";
 
 import { db } from "../services/db";
 
+function saveDeviceToken(token) {
+    // Firestoreにデバイストークンを保存
+    db.collection("tokens")
+      .add({ token })
+      .then(docRef => console.log(`document written with ID:${docRef}`))
+      .catch(err => console.error(`error: ${err}`));
+}
+
 function registerForPushNotificationsAsync(navigation) {
   return async () => {
     // プッシュ通知のパーミッションを取得
@@ -27,11 +35,8 @@ function registerForPushNotificationsAsync(navigation) {
     // Expo用のデバイストークンを取得
     const token = await Notifications.getExpoPushTokenAsync();
 
-    // Firestoreにデバイストークンを保存
-    db.collection("tokens")
-      .add({ token })
-      .then(docRef => console.log(`document written with ID:${docRef}`))
-      .catch(err => console.error(`error: ${err}`));
+    // Firebaseにデバイストークンを保存
+    saveDeviceToken(token);
 
     // UI待ちを防ぐためにすぐnavigate
     navigation.navigate("Thread");
