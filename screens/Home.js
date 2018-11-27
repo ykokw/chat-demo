@@ -4,15 +4,19 @@ import { Permissions, Notifications } from "expo";
 
 import { db } from "../services/db";
 
-function saveDeviceToken(token) {
-    // Firestoreにデバイストークンを保存
-    db.collection("tokens")
-      .add({ token })
-      .then(docRef => console.log(`document written with ID:${docRef}`))
-      .catch(err => console.error(`error: ${err}`));
-}
+const saveDeviceToken = async (token) => {
+  try {
+    // Firestore にデバイストークンを保存
+    const docRef = await db.collection("tokens").add({ token })
+    console.log(`document written with ID:${docRef}`); // デバッグ用
+  } catch (err) {
+    console.error(`error: ${err}`);
+  }
+};
 
-function registerForPushNotificationsAsync(navigation) {
+
+// デバイストークンを端末から取得して Firebase に保存する処理
+const registerForPushNotificationsAsync = (navigation) => {
   return async () => {
     // プッシュ通知のパーミッションを取得
     const { status: existingStatus } = await Permissions.getAsync(
@@ -32,16 +36,16 @@ function registerForPushNotificationsAsync(navigation) {
       return;
     }
 
-    // Expo用のデバイストークンを取得
+    // Expo 用のデバイストークンを取得
     const token = await Notifications.getExpoPushTokenAsync();
 
-    // Firebaseにデバイストークンを保存
+    // Firebase にデバイストークンを保存するメソッドを呼び出す
     saveDeviceToken(token);
 
-    // UI待ちを防ぐためにすぐnavigate
+    // React Navigation で画面遷移
     navigation.navigate("Thread");
   };
-}
+};
 
 const Home = ({ navigation }) => (
   <View style={styles.home}>
