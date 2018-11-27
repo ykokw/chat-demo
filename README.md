@@ -2,7 +2,7 @@
 
 Experimental React Native project.
 
-This project uses [Expo](https://expo.io/) and [Firebase](https://firebase.google.com/?hl=ja) to save Messages data and send Push Notification.
+This project uses [Expo](https://expo.io/) and [Firebase](https://firebase.google.com/?hl=ja) to save messages and send push notification.
 
 ## pre requirements
 
