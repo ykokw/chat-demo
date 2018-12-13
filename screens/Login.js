@@ -28,7 +28,6 @@ const signUpWithGoogleAccount = async nav => {
       return { cancelled: true };
     }
   } catch (e) {
-    console.error(e);
     return { error: true };
   }
 };
@@ -37,10 +36,7 @@ class Login extends React.Component {
   componentDidMount() {
     // Listen for authentication state to change.
     firebase.auth().onAuthStateChanged(user => {
-      console.log("onAuthStateChanged");
       if (user != null) {
-        console.log(user);
-        console.log("We are authenticated now!");
         this.props.navigation.navigate("Home");
       }
     });
