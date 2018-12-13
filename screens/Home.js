@@ -49,7 +49,6 @@ const registerForPushNotificationsAsync = (navigation) => {
 
 const Home = ({ navigation }) => (
   <View style={styles.home}>
-    <Text style={styles.title}>chat-demo</Text>
     <Text>This app use push notification for notify new messages.</Text>
     <Text>Please enable push notification when you starting chat-demo</Text>
     <Button
@@ -66,10 +65,6 @@ const styles = StyleSheet.create({
     alignItems: "center",
     justifyContent: "center"
   },
-  title: {
-    fontSize: 24,
-    marginBottom: 24
-  }
 });
 
 export default Home;
