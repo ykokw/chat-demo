@@ -1,5 +1,6 @@
 import { createStackNavigator, createSwitchNavigator } from "react-navigation";
 
+import LoadingScreen from "./screens/Loading";
 import HomeScreen from "./screens/Home";
 import ThreadScreen from "./screens/Thread";
 import LoginScreen from "./screens/Login";
@@ -20,10 +21,11 @@ const AuthStack = createStackNavigator({
 
 export default createSwitchNavigator(
   {
+    InitialLoading: LoadingScreen,
     App: AppStack,
-    Auth: AuthStack,
+    Auth: AuthStack
   },
   {
-    initialRouteName: "Auth"
+    initialRouteName: "InitialLoading"
   }
 );

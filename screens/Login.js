@@ -33,14 +33,6 @@ const signUpWithGoogleAccount = async nav => {
 };
 
 class Login extends React.Component {
-  componentDidMount() {
-    // Listen for authentication state to change.
-    firebase.auth().onAuthStateChanged(user => {
-      if (user != null) {
-        this.props.navigation.navigate("Home");
-      }
-    });
-  }
   render() {
     const { navigation } = this.props;
     return (
