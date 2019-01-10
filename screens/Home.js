@@ -1,6 +1,7 @@
 import React from "react";
 import { StyleSheet, View, Text, Button } from "react-native";
 import { Permissions, Notifications } from "expo";
+import firebase from "firebase";
 
 import { db } from "../services/db";
 
@@ -47,16 +48,29 @@ const registerForPushNotificationsAsync = (navigation) => {
   };
 };
 
-const Home = ({ navigation }) => (
-  <View style={styles.home}>
-    <Text>This app use push notification for notify new messages.</Text>
-    <Text>Please enable push notification when you starting chat-demo</Text>
-    <Button
-      title="Start with push notification"
-      onPress={registerForPushNotificationsAsync(navigation)}
-    />
-  </View>
-);
+const handleSignOut = async () => {
+  await firebase.auth().signOut();
+}
+
+class Home extends React.Component {
+  static navigationOptions = {
+    title: "chat-demo: HOME",
+    headerRight: <Button title="logout" onPress={() => handleSignOut()}/>
+  }
+  render() {
+    const { navigation } = this.props;
+    return (
+      <View style={styles.home}>
+        <Text>This app use push notification for notify new messages.</Text>
+        <Text>Please enable push notification when you starting chat-demo</Text>
+        <Button
+          title="Start with push notification"
+          onPress={registerForPushNotificationsAsync(navigation)}
+        />
+      </View>
+    )
+  }
+}
 
 const styles = StyleSheet.create({
   home: {
