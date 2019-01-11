@@ -1,6 +1,4 @@
-import React from 'react';
 import { createStackNavigator, createSwitchNavigator } from "react-navigation";
-import { Button } from 'react-native';
 
 import LoadingScreen from "./screens/Loading";
 import HomeScreen from "./screens/Home";

@@ -52,6 +52,10 @@ class Thread extends React.Component {
     });
   }
 
+  componentDidMount() {
+    console.log(this.props.navigation.getParam('roomId', ''));
+  }
+
   render() {
     return (
       <KeyboardAvoidingView
