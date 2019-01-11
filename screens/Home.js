@@ -7,16 +7,21 @@ import { db } from "../services/db";
 
 const saveDeviceToken = async (token) => {
   try {
+    // token(ExponentPushToken[xxxxx]の形式)からランダム文字列そうなところだけ取り出す
+    // firestoreのパスに記号が使えないため
+    const tokenDatas = token.match(/ExponentPushToken\[(.*)\]/);
+    const actualToken = tokenDatas[1];
+    if (!actualToken) return;
     // デバイストークンが保存済みかを確認
     const user = await firebase.auth().currentUser;
-    const userDocRef = db.collection("users").doc(user.uid);
-    const userDoc = await userDocRef.get();
+    const userRef = db.collection("users").doc(user.uid);
+    const userDoc = await userRef.get();
     const userInfo = userDoc.data();
     const currentTokens = userInfo.tokens || [];
-    console.log(currentTokens);
-    if(!currentTokens.some(t => t === token)) {
+    if(!currentTokens[actualToken]) {
       // Firestore にデバイストークンを保存
-      await userDocRef.update({ tokens: currentTokens.concat([token])});
+      currentTokens[actualToken] = true;
+      await userRef.update({ tokens: { ...currentTokens }});
     }
   } catch (err) {
     console.error(`device token save error: ${err}`);
