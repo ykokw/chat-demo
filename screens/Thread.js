@@ -21,18 +21,19 @@ class Thread extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      text: "",
+      text: '',
       messages: []
     };
     this.handleChangeText = this.handleChangeText.bind(this);
     this.handleSubmitText = this.handleSubmitText.bind(this);
 
     // メッセージが追加されたときのイベントリスナーを用意
-    db.collection("messages")
+    this.messagePath = `rooms/${this.props.navigation.getParam('roomId', '')}/messages`;
+    db.collection(this.messagePath)
       .orderBy("created_at")
       .onSnapshot(snapshot => {
         this.setState({
-          text: this.state.text,
+          text: '',
           messages: snapshot.docs.map(doc => doc.data())
         });
       });
@@ -46,7 +47,7 @@ class Thread extends React.Component {
 
   handleSubmitText() {
     // messages コレクションにデータを保存
-    db.collection("messages").add({
+    db.collection(this.messagePath).add({
       text: this.state.text,
       created_at: new Date()
     });
