@@ -2,6 +2,7 @@ import React from "react";
 import { StyleSheet, View, Text, Button } from "react-native";
 import firebase from "firebase";
 import { Google } from "expo";
+import { db } from "../services/db";
 
 const clientIds = {
   androidClientId: process.env.ANDROID_CLIENT_ID,
@@ -20,14 +21,15 @@ const signUpWithGoogleAccount = async nav => {
     if (result.type === "success") {
       const { idToken } = result;
       const credential = firebase.auth.GoogleAuthProvider.credential(idToken);
-      const signInResult = await firebase
-        .auth()
-        .signInWithCredential(credential);
+      const user = await firebase.auth().signInWithCredential(credential);
+      // user情報をfirestoreに保存
+      await db.collection('users').doc(user.uid).set({ email: user.email })
       nav.navigate("Home");
     } else {
       return { cancelled: true };
     }
   } catch (e) {
+    console.log(e);
     return { error: true };
   }
 };
