@@ -7,17 +7,25 @@ import { db } from "../services/db";
 
 const saveDeviceToken = async (token) => {
   try {
-    // Firestore にデバイストークンを保存
-    const docRef = await db.collection("tokens").add({ token })
-    console.log(`document written with ID:${docRef}`); // デバッグ用
+    // デバイストークンが保存済みかを確認
+    const user = await firebase.auth().currentUser;
+    const userDocRef = db.collection("users").doc(user.uid);
+    const userDoc = await userDocRef.get();
+    const userInfo = userDoc.data();
+    const currentTokens = userInfo.tokens || [];
+    console.log(currentTokens);
+    if(!currentTokens.some(t => t === token)) {
+      // Firestore にデバイストークンを保存
+      await userDocRef.update({ tokens: currentTokens.concat([token])});
+    }
   } catch (err) {
-    console.error(`error: ${err}`);
+    console.error(`device token save error: ${err}`);
   }
 };
 
 
 // デバイストークンを端末から取得して Firebase に保存する処理
-const registerForPushNotificationsAsync = (navigation) => {
+const registerForPushNotificationsAsync = () => {
   return async () => {
     // プッシュ通知のパーミッションを取得
     const { status: existingStatus } = await Permissions.getAsync(
@@ -42,9 +50,6 @@ const registerForPushNotificationsAsync = (navigation) => {
 
     // Firebase にデバイストークンを保存するメソッドを呼び出す
     saveDeviceToken(token);
-
-    // React Navigation で画面遷移
-    // navigation.navigate("Thread");
   };
 };
 
@@ -81,6 +86,9 @@ class Home extends React.Component {
           rooms: snapshot.docs.map(doc => ({ id: doc.id, name: doc.data().name }))
         });
       });
+  }
+  componentDidMount() {
+    registerForPushNotificationsAsync()();
   }
   render() {
     const { navigation } = this.props;
