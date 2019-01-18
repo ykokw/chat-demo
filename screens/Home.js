@@ -59,16 +59,16 @@ const registerForPushNotificationsAsync = () => {
 };
 
 
-const RoomItem = ({ room, navigation }) => {
+const TopicItem = ({ topic, navigation }) => {
   return (
   <View style={styles.listItemContainer}>
-    <Button title={room.name || ""} style={styles.listItem} onPress={() => handleSelectRoom(room.id, navigation)} />
+    <Button title={topic.name || ""} style={styles.listItem} onPress={() => handleSelectTopic(topic.id, navigation)} />
   </View>
   );
 }
 
-const handleSelectRoom = (id, navigation) => {
-  navigation.navigate("Thread", { roomId: id });
+const handleSelectTopic = (id, navigation) => {
+  navigation.navigate("Thread", { topicId: id });
 }
 
 const handleSignOut = async () => {
@@ -83,12 +83,12 @@ class Home extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      rooms: []
+      topics: []
     };
-    db.collection("rooms")
+    db.collection("topics")
       .onSnapshot(snapshot => {
         this.setState({
-          rooms: snapshot.docs.map(doc => ({ id: doc.id, name: doc.data().name }))
+          topics: snapshot.docs.map(doc => ({ id: doc.id, name: doc.data().name }))
         });
       });
   }
@@ -101,8 +101,8 @@ class Home extends React.Component {
       <View style={styles.home}>
         <FlatList
           style={styles.list}
-          data={this.state.rooms}
-          renderItem={({ item }) => <RoomItem room={{...item}} navigation={navigation} />}
+          data={this.state.topics}
+          renderItem={({ item }) => <TopicItem topic={{...item}} navigation={navigation} />}
         />
         {/*
         <Text>This app use push notification for notify new messages.</Text>

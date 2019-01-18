@@ -28,7 +28,7 @@ class Thread extends React.Component {
     this.handleSubmitText = this.handleSubmitText.bind(this);
 
     // メッセージが追加されたときのイベントリスナーを用意
-    this.messagePath = `rooms/${this.props.navigation.getParam('roomId', '')}/messages`;
+    this.messagePath = `topics/${this.props.navigation.getParam('topicId', '')}/messages`;
     db.collection(this.messagePath)
       .orderBy("created_at")
       .onSnapshot(snapshot => {
@@ -54,7 +54,7 @@ class Thread extends React.Component {
   }
 
   componentDidMount() {
-    console.log(this.props.navigation.getParam('roomId', ''));
+    console.log(this.props.navigation.getParam('topicId', ''));
   }
 
   render() {
