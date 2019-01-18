@@ -9,8 +9,8 @@ const saveDeviceToken = async (token) => {
   try {
     // token(ExponentPushToken[xxxxx]の形式)からランダム文字列そうなところだけ取り出す
     // firestoreのパスに記号が使えないため
-    const tokenDatas = token.match(/ExponentPushToken\[(.*)\]/);
-    const actualToken = tokenDatas[1];
+    const matchResults = token.match(/ExponentPushToken\[(.*)\]/);
+    const actualToken = matchResults[1];
     if (!actualToken) return;
     // デバイストークンが保存済みかを確認
     const user = await firebase.auth().currentUser;
